@@ -14,3 +14,6 @@ start:
 
 stop:
 	$(DOCKER_COMPOSE) down; docker system prune -f
+
+restart:
+	make stop ; make start-build  

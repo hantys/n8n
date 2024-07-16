@@ -1,5 +1,3 @@
-version: "3.9"
-
 volumes:
   redis_storage:
   postgres_storage:
@@ -18,13 +16,13 @@ x-shared: &shared
     WEBHOOK_URL: "${N8N_PROTOCOL}://${HOST}:${N8N_PORT}/"
     GENERIC_TIMEZONE: "${GENERIC_TIMEZONE}"
     DB_TYPE: "postgresdb"
-    DB_POSTGRESDB_HOST: "postgres"
+    DB_POSTGRESDB_HOST: "${POSTGRES_HOST}"
     DB_POSTGRESDB_DATABASE: "${POSTGRES_DB}"
     DB_POSTGRESDB_USER: "${POSTGRES_USER}"
     DB_POSTGRESDB_PASSWORD: "${POSTGRES_PASSWORD}"
     DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED: "true"
     EXECUTIONS_MODE: "queue"
-    QUEUE_BULL_REDIS_HOST: "redis"
+    QUEUE_BULL_REDIS_HOST: "${REDIS_HOST}"
     QUEUE_BULL_REDIS_PASSWORD: "${REDIS_PASSWORD}"
     QUEUE_HEALTH_CHECK_ACTIVE: "true"
   depends_on:
@@ -32,6 +30,20 @@ x-shared: &shared
       condition: service_healthy
     postgres:
       condition: service_healthy
+
+x-backend-variables: &backend-variables
+  SECRET_KEY: ${SECRET_KEY:?}
+  BASEROW_JWT_SIGNING_KEY: ${BASEROW_JWT_SIGNING_KEY:-}
+  DATABASE_PASSWORD: ${POSTGRES_PASSWORD:?}
+  REDIS_PASSWORD: ${REDIS_PASSWORD:?}
+
+  BASEROW_PUBLIC_URL: ${BASEROW_PUBLIC_URL-http://localhost}
+
+  DATABASE_USER: "baserow"
+  DATABASE_NAME: ${DATABASE_NAME:-baserow}
+  MIGRATE_ON_STARTUP: ${MIGRATE_ON_STARTUP:-true}
+  SYNC_TEMPLATES_ON_STARTUP: ${SYNC_TEMPLATES_ON_STARTUP:-true}
+
 
 services:
   browserless:
@@ -87,6 +99,18 @@ services:
 
   n8n-worker:
     <<: *shared
+    environment:
+      N8N_ENCRYPTION_KEY: "${N8N_ENCRYPTION_KEY}"
     command: "/bin/sh -c 'sleep 5; n8n worker'"
     depends_on:
       - "n8n"
+
+  baserow:
+    container_name: baserow
+    image: baserow/baserow:1.26.1
+    environment:
+      <<: *backend-variables
+    ports:
+      - "3001:80"
+    volumes:
+      - ./baserow_data:/baserow/data
