@@ -1,4 +1,5 @@
 baserow_data/*
 node_modules
 n8n_storage/*
-.DS_Store 
+.DS_Store
+.env
