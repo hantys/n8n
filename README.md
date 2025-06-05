@@ -18,13 +18,13 @@ Este projeto configura o `n8n` em um ambiente Docker com suporte a Webhooks púb
 
 ## 📁 Estrutura esperada
 
+```plaintext
 n8n-setup/
 ├── docker-compose.yml
 ├── .env
 ├── n8n_storage/
 └── README.md
-
-
+```
 ---
 
 ## ⚙️ Arquivo `.env` (exemplo)
@@ -59,6 +59,7 @@ REDIS_PASSWORD=minhasenha_redis
 
 # Ngrok
 NGROK_AUTHTOKEN=seu_token_do_ngrok_aqui
+```
 
 ## 🐳 Subindo o ambiente
 
@@ -67,22 +68,18 @@ Para iniciar os serviços com Docker Compose, execute:
 ```bash
 docker-compose down -v --remove-orphans
 docker-compose up -d --build
+```
 
-Este comando irá:
+### Este comando irá:
 
-Construir e iniciar os containers para:
+- Construir e iniciar os containers para:
+  - **n8n** (orquestrador de automações)
+  - **PostgreSQL** (banco de dados)
+  - **Redis** (gerenciador de filas)
+  - **Ngrok** (exposição do n8n via HTTPS público)
+- Ler as variáveis do arquivo `.env`
+- Aplicar as configurações corretas de rede
 
-n8n (orquestrador de automações)
-
-PostgreSQL (banco de dados)
-
-Redis (gerenciador de filas)
-
-Ngrok (exposição do n8n via HTTPS público)
-
-Ler as variáveis do arquivo .env
-
-Aplicar as configurações corretas de rede
 
 ## 🔐 Corrigir permissões (se necessário)
 
@@ -94,6 +91,7 @@ sudo chown -R 1000:1000 ./n8n_storage
 
 # Restringe permissões de leitura/gravação apenas para o dono
 sudo chmod -R 700 ./n8n_storage
+```
 
 Essas permissões evitam erros como:
 
@@ -130,7 +128,7 @@ Siga os passos abaixo para testar se seu webhook está funcionando corretamente 
 curl -X POST https://meuapp.ngrok-free.app/webhook/teste-webhook \
   -H "Content-Type: application/json" \
   -d '{"mensagem": "teste com ngrok"}'
-
+```
 
 ## ❌ Problemas comuns
 
@@ -143,18 +141,19 @@ O n8n não reconheceu corretamente a variável `WEBHOOK_URL` no momento da inici
 
 1. Verifique se o `.env` contém corretamente:
 
-```env
+```bash
 # 1 – confirme no .env
 WEBHOOK_URL=https://meuapp.ngrok-free.app/
 
 # 2 – reinicie o ambiente
 docker-compose down -v --remove-orphans
 docker-compose up -d --build
+```
 
 ### 🔸 Erro ERR_NGROK_8012
 
 **Mensagem:**
-Traffic was successfully tunneled to the ngrok agent, but the agent failed to establish a connection…
+> Traffic was successfully tunneled to the ngrok agent, but the agent failed to establish a connection…
 
 **Causa:**
 o serviço n8n não está escutando na porta `5678` dentro da rede Docker.
@@ -168,7 +167,7 @@ HOST=0.0.0.0
 docker exec -it n8n-setup-n8n-1 netstat -tlnp
 # saída esperada
 # tcp  0  0 0.0.0.0:5678  0.0.0.0:*  LISTEN
-
+```
 
 ## 📚 Referências úteis
 
