@@ -90,6 +90,20 @@ services:
     networks:
       - baserow_n8n_network
 
+  ngrok-evolution:
+    image: ngrok/ngrok:latest
+    restart: always
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_2}
+      - TERM=xterm
+    command: http --domain=correct-plainly-warthog.ngrok-free.app evolution:8080
+    ports:
+      - "4041:4040"
+    depends_on:
+      - n8n
+    networks:
+      - baserow_n8n_network
+
   postgres:
     image: postgres:16
     restart: always
