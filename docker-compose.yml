@@ -130,6 +130,8 @@ services:
     image: atendai/evolution-api:homolog  # Substitua por sua imagem, se diferente
     container_name: evolution-api
     restart: always
+    env_file:
+      - .env.evolution
     ports:
       - "8080:8080"  # Ou a porta correta usada pela API
     environment:

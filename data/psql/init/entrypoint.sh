@@ -14,6 +14,8 @@ done
 echo "🔍 Verificando se o banco evolution_db já existe..."
 EXISTS=$(psql -U "$POSTGRES_USER" -d postgres -tAc "SELECT 1 FROM pg_database WHERE datname='evolution_db'")
 
+echo "Senha detectada: ${EVOLUTION_PASSWORD}"
+
 if [ "$EXISTS" != "1" ]; then
   echo "⚙️ Criando banco evolution_db..."
   psql -U "$POSTGRES_USER" -d postgres <<EOF

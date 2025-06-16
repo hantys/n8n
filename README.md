@@ -32,6 +32,14 @@ Este setup inclui o Evolution API — uma API de automações personalizáveis q
 
 ---
 
+## ⚙️ Arquivo `.env.evolution.example` (exemplo)
+
+Crie um arquivo `.env.evolution` na raiz do projeto com:
+
+Use as informações do arquivo .env.evolution.example
+
+---
+
 ## ⚙️ Arquivo `.env` (exemplo)
 
 Crie um arquivo `.env` na raiz do projeto com:
