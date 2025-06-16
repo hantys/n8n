@@ -26,6 +26,11 @@ n8n-setup/
 └── README.md
 ```
 ---
+## ⚙️ Adicionando Evolution API
+
+Este setup inclui o Evolution API — uma API de automações personalizáveis que pode ser usada junto com o n8n.
+
+---
 
 ## ⚙️ Arquivo `.env` (exemplo)
 
@@ -51,6 +56,7 @@ POSTGRES_HOST=postgres
 POSTGRES_DB=n8n
 POSTGRES_USER=root
 POSTGRES_PASSWORD=minhasenha
+EVOLUTION_PASSWORD=minhasenha_evolution
 DB_POSTGRESDB_SSL_REJECT_UNAUTHORIZED=false
 DB_POSTGRESDB_SSL_MODE=disable
 
@@ -59,6 +65,10 @@ REDIS_PASSWORD=minhasenha_redis
 
 # Ngrok
 NGROK_AUTHTOKEN=seu_token_do_ngrok_aqui
+
+# Evolution API
+EVOLUTION_JWT_SECRET=sua_chave_forte_aqui
+EVOLUTION_DATABASE_URL=postgres://usuario:senha@postgres:5432/evolution_db
 ```
 
 ## 🐳 Subindo o ambiente
@@ -105,6 +115,7 @@ Permissions XXXX for n8n settings file are too wide.
 | Interface web (via ngrok)             | `https://meuapp.ngrok-free.app`             |
 | Interface local (sem ngrok)           | `http://localhost:5678`                     |
 | Painel de monitoramento do ngrok      | `http://localhost:4040`                     |
+| API Evolution (local)	                | `http://localhost:3010`                     |
 
 ## 📡 Testando Webhooks externos
 
@@ -176,3 +187,4 @@ docker exec -it n8n-setup-n8n-1 netstat -tlnp
 - [n8n Webhook Node](https://docs.n8n.io/integrations/builtin/core-nodes/n8n-nodes-base.webhook/)
 - [Exemplos de automações com n8n](https://n8n.io/workflows)
 - [n8n GitHub oficial](https://github.com/n8n-io/n8n)
+- [API Evolution](https://github.com/EvolutionAPI/evolution-api)

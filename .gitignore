@@ -3,3 +3,5 @@ node_modules
 n8n_storage/*
 .DS_Store
 .env
+data/redis/*
+data/evolution/*
