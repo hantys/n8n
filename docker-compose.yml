@@ -76,31 +76,45 @@ services:
     networks:
       - baserow_n8n_network
 
-  ngrok:
-    image: ngrok/ngrok:latest
-    restart: always
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
-      - TERM=xterm
-    command: http --domain=generous-thrush-frankly.ngrok-free.app n8n:5678
-    ports:
-      - "4040:4040"
-    depends_on:
-      - n8n
-    networks:
-      - baserow_n8n_network
+  # ngrok:
+  #   container_name: ngrok-n8n
+  #   image: ngrok/ngrok:latest
+  #   restart: always
+  #   environment:
+  #     - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+  #     - TERM=xterm
+  #   command: http --domain=generous-thrush-frankly.ngrok-free.app n8n:5678
+  #   ports:
+  #     - "4040:4040"
+  #   depends_on:
+  #     - n8n
+  #     - n8n-worker
+  #   networks:
+  #     - baserow_n8n_network
 
-  ngrok-evolution:
-    image: ngrok/ngrok:latest
+  # ngrok-evolution:
+  #   container_name: ngrok-evolution
+  #   image: ngrok/ngrok:latest
+  #   restart: always
+  #   environment:
+  #     - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_2}
+  #     - TERM=xterm
+  #   command: http --domain=correct-plainly-warthog.ngrok-free.app localhost:8080
+  #   ports:
+  #     - "4041:4040"
+  #   depends_on:
+  #     - n8n
+  #     - evolution
+  #   networks:
+  #     - baserow_n8n_network
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
     restart: always
-    environment:
-      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN_2}
-      - TERM=xterm
-    command: http --domain=correct-plainly-warthog.ngrok-free.app evolution:8080
-    ports:
-      - "4041:4040"
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARED_AUTHTOKEN}
     depends_on:
       - n8n
+      - evolution
     networks:
       - baserow_n8n_network
 
