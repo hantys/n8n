@@ -10,6 +10,8 @@ x-shared: &shared
   restart: always
   build: .
   environment:
+    N8N_TRUST_PROXY: "${N8N_TRUST_PROXY}"
+    N8N_RUNNERS_ENABLED: "${N8N_RUNNERS_ENABLED}"
     NODE_ENV: "production"
     N8N_HOST: "${HOST}"
     N8N_PORT: "${N8N_PORT}"
@@ -183,10 +185,7 @@ services:
     environment:
       N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
       WEBHOOK_URL: "${WEBHOOK_URL}"
-      N8N_TRUST_PROXY: "${N8N_TRUST_PROXY}"
-      N8N_RUNNERS_ENABLED: "${N8N_RUNNERS_ENABLED}"
-      N8N_DEFAULT_RETURN_JSON_HEADER: "${N8N_DEFAULT_RETURN_JSON_HEADER}"
-      N8N_SECURITY_ALLOW_ORIGIN: "${N8N_SECURITY_ALLOW_ORIGIN}"
+
     volumes:
       - "./n8n_storage:/home/node/.n8n"
     ports:
@@ -205,10 +204,6 @@ services:
       N8N_ENCRYPTION_KEY: "${N8N_ENCRYPTION_KEY}"
       QUEUE_BULL_REDIS_HOST: "redis"
       QUEUE_BULL_REDIS_PASSWORD: "${REDIS_PASSWORD}"
-      N8N_TRUST_PROXY: "${N8N_TRUST_PROXY}"
-      N8N_RUNNERS_ENABLED: "${N8N_RUNNERS_ENABLED}"
-      N8N_DEFAULT_RETURN_JSON_HEADER: "${N8N_DEFAULT_RETURN_JSON_HEADER}"
-      N8N_SECURITY_ALLOW_ORIGIN: "${N8N_SECURITY_ALLOW_ORIGIN}"
     command: "/bin/sh -c 'sleep 5; n8n worker'"
     depends_on:
       - "n8n"
