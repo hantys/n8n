@@ -185,7 +185,6 @@ services:
     environment:
       N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: true
       WEBHOOK_URL: "${WEBHOOK_URL}"
-
     volumes:
       - "./n8n_storage:/home/node/.n8n"
     ports:
